@@ -13,6 +13,7 @@ public class Main {
         ArrayList[] list = new ArrayList[x];
         for (int i = 0; i < x; i++) {
             list[i] = new ArrayList();
+            
         }
     }
 }
