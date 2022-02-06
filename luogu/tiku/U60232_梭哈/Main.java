@@ -8,7 +8,7 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
         int[] t = new int[n];
-        int[] cnt = new int[1000000];
+        int[] cnt = new int[100000];
         for (int i = 0; i < n; i++) {
             t[i] = Integer.parseInt(st.nextToken());
             cnt[t[i]]++;
