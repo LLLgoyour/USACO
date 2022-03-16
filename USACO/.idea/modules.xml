@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/21-22/21-22.iml" filepath="$PROJECT_DIR$/21-22/21-22.iml" />
+      <module fileurl="file://$PROJECT_DIR$/19-20/Bronze/Dec2019Contest/Dec2019Contest.iml" filepath="$PROJECT_DIR$/19-20/Bronze/Dec2019Contest/Dec2019Contest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/19-20/Bronze/Feb2020Contest/Feb2020Contest.iml" filepath="$PROJECT_DIR$/19-20/Bronze/Feb2020Contest/Feb2020Contest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/21-22/Jan2022Contest/Jan2022Contest.iml" filepath="$PROJECT_DIR$/21-22/Jan2022Contest/Jan2022Contest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/USACO.iml" filepath="$PROJECT_DIR$/USACO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/USACO_guide/USACO_guide.iml" filepath="$PROJECT_DIR$/USACO_guide/USACO_guide.iml" />
+    </modules>
+  </component>
+</project>

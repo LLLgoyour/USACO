@@ -2,15 +2,18 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) throws IOException 
     {
         Kattio io = new Kattio("photo");
-        int N = io.getInt();
-        io.close();
+        int b = io.getInt();
+        int[] array = io.nextInt(n - 1);
+        for (int i = 0; i < n; i++) {
+            int[] a;
+            b[i] = a[i] + a[i+1];
+        }
         
+        io.close();
     }
-
     static class Kattio extends PrintWriter 
     {
 		private BufferedReader r;
