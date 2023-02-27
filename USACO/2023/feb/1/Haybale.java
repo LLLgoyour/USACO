@@ -6,48 +6,48 @@ public class Haybale {
         FastIO io = new FastIO();
         int n = io.nextInt();
         long t = io.nextLong();
-        long count = 0;
+        long c = 0;
         long hb = 0;
-        long[][] deliveries = new long[n][2];
+        long[][] l = new long[n][2];
 
         for (int i = 0; i < n; i++) {
-            deliveries[i][0] = io.nextLong();
-            deliveries[i][1] = io.nextLong();
-            hb += deliveries[i][1];
+            l[i][0] = io.nextLong();
+            l[i][1] = io.nextLong();
+            hb += l[i][1];
             if (n == 1) {
-                if (deliveries[i][0] < t) {
+                if (l[i][0] < t) {
                     if (hb >= t) {
-                        count += t;
+                        c += t;
                         break;
                     } else {
-                        count += hb;
+                        c += hb;
                         break;
                     }
                 }
             }
             if (i > 0) {
-                if (deliveries[i][0] - deliveries[i - 1][0] + 1 <= (hb - deliveries[i][1])) {
-                    count += deliveries[i][0] - deliveries[i - 1][0];
-                    hb -= deliveries[i][0] - deliveries[i - 1][0];
+                if (l[i][0] - l[i - 1][0] + 1 <= (hb - l[i][1])) {
+                    c += l[i][0] - l[i - 1][0];
+                    hb -= l[i][0] - l[i - 1][0];
                 } else {
-                    count += hb - deliveries[i][1];
-                    hb = deliveries[i][1];
+                    c += hb - l[i][1];
+                    hb = l[i][1];
                 }
             }
-            if (deliveries[i][0] >= t) {
+            if (l[i][0] >= t) {
                 if (hb > 0) {
-                    if (hb > (t - deliveries[i][0])) {
-                        count += t - deliveries[i][0] + 1;
+                    if (hb > (t - l[i][0])) {
+                        c += t - l[i][0] + 1;
                         break;
                     }
-                    count += hb;
+                    c += hb;
                     break;
                 } else {
                     break;
                 }
             }
         }
-        io.println(count);
+        io.println(c);
         io.close();
     }
 }
