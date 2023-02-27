@@ -1,30 +1,28 @@
 import java.util.*;
 import java.io.*;
 
-// © 2023 Feb. LLLgoyour. All Rights Reserved.
-
 public class Mooloo {
     public static void main(String[] args) throws Exception {
         FastIO io = new FastIO();
         int n = io.nextInt();
         int k = io.nextInt();
-        long[] days = new long[n];
+        long[] d = new long[n];
         for (int i = 0; i < n; i++) {
-            days[i] = io.nextLong();
+            d[i] = io.nextLong();
         }
 
-        long cost = k;
-        long fee = cost + 1;
+        long longK = k;
+        long m = longK + 1;
 
         for (int i = 0; i < n - 1; i++) {
-            long duration = days[i + 1] - days[i]; // i-1
-            if (duration >= cost + 1) {
-                fee += cost + 1;
+            long t = d[i + 1] - d[i]; // i-1
+            if (t >= longK + 1) {
+                m += longK + 1;
             } else {
-                fee += duration;
+                m += t;
             }
         }
-        io.println(fee);
+        io.println(m);
         io.close();
     }
 }
@@ -35,7 +33,6 @@ class FastIO extends PrintWriter {
     private int curChar;
     private int numChars;
 
-    // standard input
     public FastIO() {
         this(System.in, System.out);
     }
@@ -45,13 +42,11 @@ class FastIO extends PrintWriter {
         stream = i;
     }
 
-    // file input
     public FastIO(String i, String o) throws IOException {
         super(new FileWriter(o));
         stream = new FileInputStream(i);
     }
 
-    // throws InputMismatchException() if previously detected end of file
     private int nextByte() {
         if (numChars == -1) {
             throw new InputMismatchException();
@@ -70,8 +65,6 @@ class FastIO extends PrintWriter {
         return buf[curChar++];
     }
 
-    // to read in entire lines, replace c <= ' '
-    // with a function that checks whether c is a line break
     public String next() {
         int c;
         do {

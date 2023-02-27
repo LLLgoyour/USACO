@@ -1,8 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-// © 2023 Feb. LLLgoyour.
-
 public class Haybale {
     public static void main(String[] args) throws Exception {
         FastIO io = new FastIO();
@@ -19,33 +17,36 @@ public class Haybale {
 
         for (int i = 0; i < n; i++) {
             hb += deliveries[i][1];
-            if (i > 0) {
-                if (deliveries[i][0] >= t) {
-                    if (hb > 0) {
-                        count += 1;
-                        io.println("last count:");
+            if (n == 1) {
+                if (deliveries[i][0] < t) {
+                    if (hb >= t) {
+                        count += t;
                         break;
                     } else {
+                        count += hb;
                         break;
                     }
                 }
-                if (deliveries[i][0] - deliveries[i - 1][0] <= hb) {
+            }
+            if (i > 0) {
+                if (deliveries[i][0] - deliveries[i - 1][0] + 1 <= (hb - deliveries[i][1])) {
                     count += deliveries[i][0] - deliveries[i - 1][0];
-                    io.println("count when day is less than hb: " + count);
                     hb -= deliveries[i][0] - deliveries[i - 1][0];
-                    io.println("Haybale-=haybale-day difference:");
                 } else {
-                    count += hb;
-                    io.println("count when day is greater than hb: " + count);
-                    hb = 0;
-                    io.println("Haybale = 0:" + hb);
+                    count += hb - deliveries[i][1];
+                    hb = deliveries[i][1];
                 }
-            } else {
-                if (hb >= t) {
-                    count += t;
-                } else {
+            }
+            if (deliveries[i][0] >= t) {
+                if (hb > 0) {
+                    if (hb > (t - deliveries[i][0])) {
+                        count += t - deliveries[i][0] + 1;
+                        break;
+                    }
                     count += hb;
-                    hb = 0;
+                    break;
+                } else {
+                    break;
                 }
             }
         }

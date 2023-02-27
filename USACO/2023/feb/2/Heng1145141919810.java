@@ -1,5 +1,4 @@
 import java.util.*;
-// © 2023 Feb. LLLgoyour. All Rights Reserved.
 
 public class Heng1145141919810 {
     public static void main(String[] args) throws Exception {
