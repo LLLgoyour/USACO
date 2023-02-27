@@ -61,7 +61,6 @@ class FastIO extends PrintWriter {
     private int curChar;
     private int numChars;
 
-    // standard input
     public FastIO() {
         this(System.in, System.out);
     }
@@ -71,13 +70,11 @@ class FastIO extends PrintWriter {
         stream = i;
     }
 
-    // file input
     public FastIO(String i, String o) throws IOException {
         super(new FileWriter(o));
         stream = new FileInputStream(i);
     }
 
-    // throws InputMismatchException() if previously detected end of file
     private int nextByte() {
         if (numChars == -1) {
             throw new InputMismatchException();
@@ -96,8 +93,6 @@ class FastIO extends PrintWriter {
         return buf[curChar++];
     }
 
-    // to read in entire lines, replace c <= ' '
-    // with a function that checks whether c is a line break
     public String next() {
         int c;
         do {
