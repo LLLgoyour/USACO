@@ -13,9 +13,6 @@ public class Haybale {
         for (int i = 0; i < n; i++) {
             deliveries[i][0] = io.nextLong();
             deliveries[i][1] = io.nextLong();
-        }
-
-        for (int i = 0; i < n; i++) {
             hb += deliveries[i][1];
             if (n == 1) {
                 if (deliveries[i][0] < t) {
