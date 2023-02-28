@@ -13,41 +13,39 @@ public class Haybale {
         for (int i = 0; i < n; i++) {
             l[i][0] = io.nextLong();
             l[i][1] = io.nextLong();
-            hb += l[i][1];
-            if (n == 1) {
-                if (l[i][0] < t) {
-                    if (hb >= t) {
-                        c += t;
-                        break;
-                    } else {
-                        c += hb;
-                        break;
-                    }
-                }
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (c >= t || hb == t) {
+                break;
             }
-            if (i > 0) {
-                if (l[i][0] - l[i - 1][0] + 1 <= (hb - l[i][1])) {
-                    c += l[i][0] - l[i - 1][0];
-                    hb -= l[i][0] - l[i - 1][0];
-                } else {
-                    c += hb - l[i][1];
-                    hb = l[i][1];
-                }
+            if (l[i][0] == t) {
+                c += 1;
+                break;
             }
-            if (l[i][0] >= t) {
-                if (hb > 0) {
-                    if (hb > (t - l[i][0])) {
-                        c += t - l[i][0] + 1;
-                        break;
-                    }
-                    c += hb;
-                    break;
+            if (Math.max(l[i][0], hb) + l[i][1] - 1 >= t) {
+                if (hb >= l[i][0]) {
+                    c += t - hb;
                 } else {
-                    break;
+                    c += (t - l[i][0]) + 1;
                 }
+                hb = t;
+                break;
+            } else {
+                if (l[i][0] <= hb) {
+                    hb += l[i][1];
+                } else {
+                    hb = l[i][0] + l[i][1] - 1;
+                }
+                c += l[i][1];
             }
         }
-        io.println(c);
+
+        if (c >= t) {
+            io.println(t);
+        } else {
+            io.println(c);
+        }
         io.close();
     }
 }
