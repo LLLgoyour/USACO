@@ -1,118 +1,115 @@
 package P1002;
 
-import java.io.*;
+/* credit to
+* https://github.com/pufferfist/luogu/blob/master/popular/src/dp/P1002/Main.java
+* by pufferfist...I don't know why mine occurs RE. */
+
+// import java.io.*;
 import java.util.*;
 
 public class Ma {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter pw = new PrintWriter(System.out);
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        long n = Long.parseLong(st.nextToken());
-        long m = Long.parseLong(st.nextToken());
-        long s = Long.parseLong(st.nextToken());
-        long l = Long.parseLong(st.nextToken());
-        long[][] x = new long[25][25];
-        long[][] horse = new long[25][25];
-        long ans = 0;
-        public Horse(long x, long y) {
-            this.x = s;
-            this.y = l;
+    private long[][] board;
 
+    public static void main(String[] args) {
+        System.out.println(new Ma().execute());
+    }
+
+    private long execute() {
+        Scanner s = new Scanner(System.in);
+        int bx = s.nextInt();
+        int by = s.nextInt();
+        int x = s.nextInt();
+        int y = s.nextInt();
+        board = new long[bx + 1][by + 1];
+        for (long[] i : board) {
+            for (int j = 0; j < by + 1; j++) {
+                i[j] = 0;
+            }
         }
-        // for (long i = 0; i < n; i++) {
-        // for (long j = 0; j < m; j++) {
-        // if (i == s - 3) {
-        // if (j == l)
+        if (x + 1 <= bx && y + 2 <= by)
+            board[x + 1][y + 2] = -1;
+        if (x + 1 <= bx && y - 2 >= 0)
+            board[x + 1][y - 2] = -1;
+        if (x - 1 >= 0 && y + 2 <= by)
+            board[x - 1][y + 2] = -1;
+        if (x - 1 >= 0 && y - 2 >= 0)
+            board[x - 1][y - 2] = -1;
+        if (x + 2 <= bx && y + 1 <= by)
+            board[x + 2][y + 1] = -1;
+        if (x + 2 <= bx && y - 1 >= 0)
+            board[x + 2][y - 1] = -1;
+        if (x - 2 >= 0 && y + 1 <= by)
+            board[x - 2][y + 1] = -1;
+        if (x - 2 >= 0 && y - 1 >= 0)
+            board[x - 2][y - 1] = -1;
+        if (board[0][0] == -1) {
+            return 0;
+        }
+        board[0][0] = 1;
+        board[x][y] = -1;
+        return paths(bx, by);
+    }
 
-        // }
-        // if (i == s - 2) {
-        // if (j == l - 2) {
-        // break;
-        // }
-        // ans++;
-        // }
-        // if (i == s - 1) {
-        // if (j == l - 2) {
-        // break;
-        // }
-        // ans++;
-        // }
-        // if (i == s) {
-        // if (j == l) {
-        // i += 1;
-        // j -= 1;
-        // continue;
-        // }
-        // ans++;
-        // }
-        // if (i == s + 1) {
-        // if (j == l - 2) {
-        // i += 1;
-        // j -= 1;
-        // break;
-        // }
-        // if (j == l + 2) {
-        // i += 1;
-        // j -= 2;
-        // break;
-        // }
-        // ans++;
-        // }
-        // if (i == s + 2) {
-        // if (j == l - 1) {
-        // if (n > s) {
-        // i += 1;
-        // j -= 1;
-        // } else {
-        // break;
-        // }
-        // }
-        // if (j == l + 1) {
-        // if (n > s) {
-        // i += 1;
-        // j -= 1;
-        // } else {
-        // break;
-        // }
-        // }
-        // ans++;
-        // }
-        // }
-        // }
-        pw.println(ans);
-        pw.close();
+    private long paths(int a, int b) {
+        if (board[a][b] == -1) {
+            return 0;
+        } else if (board[a][b] == 0) {
+            long result = 0;
+            if (a - 1 >= 0 && board[a - 1][b] != -1) {
+                result += paths(a - 1, b);
+            }
+            if (b - 1 >= 0 && board[a][b - 1] != -1) {
+                result += paths(a, b - 1);
+            }
+            board[a][b] = result;
+            return result;
+        } else {
+            return board[a][b];
+        }
     }
 }
 
-// long a, b, n, m,x[23][23],ma[23][23];
+// public class Ma {
+// static int n, m, s, l;
+// static long[][] x = new long[23][23];
+// static long[][] horse = new long[23][23];
 
-// void work(long long x,long long y){
-// ma[x][y]=1;
-// ma[x-1][y-2]=1;
-// ma[x-2][y-1]=1;
-// ma[x-2][y+1]=1;
-// ma[x-1][y+2]=1;
-// ma[x+1][y-2]=1;
-// ma[x+2][y-1]=1;
-// ma[x+2][y+1]=1;
-// ma[x+1][y+2]=1;
+// static void kankannide(int x, int y) {
+// horse[x][y] = 1;
+// horse[x - 1][y - 2] = 1;
+// horse[x - 2][y - 1] = 1;
+// horse[x - 2][y + 1] = 1;
+// horse[x - 1][y + 2] = 1;
+// horse[x + 1][y - 2] = 1;
+// horse[x + 2][y - 1] = 1;
+// horse[x + 2][y + 1] = 1;
+// horse[x + 1][y + 2] = 1;
 // }
 
-// long main(){
-// scanf("%lld %lld %lld %lld",&n,&m,&a,&b);
-// a++;
-// b++;
+// public static void main(String[] args) throws IOException {
+// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+// PrintWriter pw = new PrintWriter(System.out);
+// StringTokenizer st = new StringTokenizer(br.readLine());
+// n = Integer.parseInt(st.nextToken());
+// m = Integer.parseInt(st.nextToken());
+// s = Integer.parseInt(st.nextToken());
+// l = Integer.parseInt(st.nextToken());
 // n++;
 // m++;
-// work(a,b);
-// x[1][1]=1;
-// for(long i=1;i<=n;i++){
-// for(long j=1;j<=m;j++){
-// if(i==1&&j==1)continue;
-// if(ma[i][j]==0)x[i][j]=x[i-1][j]+x[i][j-1];
+// s++;
+// l++;
+// kankannide(s, l);
+// x[1][1] = 1;
+// for (int i = 1; i <= n; i++) {
+// for (int j = 1; j <= m; j++) {
+// if (i == 1 && j == 1)
+// continue;
+// if (horse[i][j] == 0)
+// x[i][j] = x[i - 1][j] + x[i][j - 1];
 // }
 // }
-// printf("%lld",x[n][m]);
-// return 0;
+// pw.println(x[n][m]);
+// pw.flush();
+// pw.close();
+// }
 // }
