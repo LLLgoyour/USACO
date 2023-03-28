@@ -1,110 +1,127 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class milk {
-    public static void main(String[] args) throws IOException {
-        // Input and output
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+class milk {
+    static class FastReader {
+        BufferedReader br;
         StringTokenizer st;
 
-        // Read input
-        int n = Integer.parseInt(br.readLine());
-        int[] a = new int[n];
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            a[i] = Integer.parseInt(st.nextToken());
+        public FastReader() {
+            br = new BufferedReader(new InputStreamReader(System.in));
         }
-        long originalSum = 0;
-        long ans = 0;
-        // Sort the array in ascending order
-        int[] sortedA = a.clone();
-        Arrays.sort(sortedA); // sorted original array
-        int[] queryA = a.clone(); // reset in every query
-        for (int k = 0; k < n; k++) {
-            originalSum += (long) (k + 1) * sortedA[k];
-        }
-        // reset sum in every query according to the original array
-        long sum = originalSum;
-        int q = Integer.parseInt(br.readLine());
 
-        // Process each query
-        while (q-- > 0) {
-            st = new StringTokenizer(br.readLine());
-            int idx = Integer.parseInt(st.nextToken()) - 1;
-            int j = Integer.parseInt(st.nextToken());
-            sum = originalSum;
-            queryA = a.clone();
-            // duandian
-            pw.println("sum:" + sum);
-            pw.println("beginning array:");
-            for (int k = 0; k < n; k++) {
-                pw.print(queryA[k] + " ");
-            }
-            // Replace the element at index idx with j
-            int oldVal = a[idx];
-            queryA[idx] = j;
-            Arrays.sort(queryA);
-            pw.println("sorted array:");
-            for (int k = 0; k < n; k++) {
-                pw.print(queryA[k] + " ");
-            }
-            idx = Arrays.binarySearch(sortedA, oldVal);
-            int newIdx = Arrays.binarySearch(queryA, j);
-
-            // Calculate the answer
-            if (idx != newIdx) {
-                if (idx < newIdx) {
-                    for (int i = newIdx; i < n; i++) {
-                        sum += (long) (i + 1) * queryA[i]; // out of bound?
-                    }
-                } else {
-                    for (int i = newIdx; i < idx; i++) {
-                        sum += (long) (i + 1) * queryA[i];
-                    }
+        String next() {
+            while (st == null || !st.hasMoreElements()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            ans = sum - (long) (oldVal) * (idx + 1) + (long) (j) * (newIdx + 1);
-            pw.println(ans);
+            return st.nextToken();
         }
-        pw.close();
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
+
+        String nextLine() {
+            String str = "";
+            try {
+                str = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return str;
+        }
+    }
+
+    public static void main(String[] args) {
+        FastReader sc = new FastReader();
+        int n = sc.nextInt();
+        long[] amt = new long[n];
+        for (int i = 0; i < n; i++) {
+            amt[i] = sc.nextLong();
+        }
+        long[] sIdx = oldLoc(amt);
+        int q = sc.nextInt();
+        long[][] queries = new long[q][2];
+        for (int i = 0; i < q; i++) {
+            queries[i][0] = sc.nextLong() - 1;
+            queries[i][1] = sc.nextLong();
+        }
+        Arrays.sort(amt);
+        long t = 0;
+        for (int i = 0; i < n; i++) {
+            t += (i + 1) * amt[i];
+        }
+        long[] prefixSum = new long[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + amt[i];
+        }
+        for (int i = 0; i < q; i++) {
+            long sQIdx = sIdx[(int) queries[i][0]];
+            System.out.println(res(amt, sQIdx, queries[i][1], t, prefixSum));
+        }
+    }
+
+    static long[] oldLoc(long[] nums) {
+        int n = nums.length;
+        long[][] ans = new long[n][2];
+        for (int i = 0; i < n; i++) {
+            ans[i][0] = nums[i];
+            ans[i][1] = i;
+        }
+        Arrays.sort(ans, (a, b) -> Long.compare(a[0], b[0]));
+        long[] f = new long[n];
+        for (int i = 0; i < n; i++) {
+            f[(int) ans[i][1]] = i;
+        }
+        return f;
+    }
+
+    static long searchInsert(long[] nums, long target, long idx) {
+        long l = 0;
+        long r = nums.length - 1;
+        while (l <= r) {
+            long m = l + (r - l) / 2;
+            if (nums[(int) m] == target) {
+                if (target >= nums[(int) idx])
+                    return m;
+                else
+                    return m + 1;
+            }
+            if (nums[(int) m] <= target) {
+                l = m + 1;
+            } else
+                r = m - 1;
+        }
+        if (target >= nums[(int) idx])
+            return l - 1;
+        return l;
+    }
+
+    static long res(long[] amt, long qIdx, long qValue, long t, long[] prefixSum) {
+        long newLoc = searchInsert(amt, qValue, qIdx);
+        long oldValue = (qIdx + 1) * amt[(int) qIdx];
+        long newValue = qValue * (newLoc + 1);
+
+        long ct = t - oldValue + newValue;
+        if (newLoc < qIdx) {
+
+            ct += prefixSum[(int) qIdx] - prefixSum[(int) newLoc];
+        } else if (newLoc > qIdx) {
+            ct -= prefixSum[(int) newLoc + 1] - prefixSum[(int) qIdx + 1];
+        }
+
+        return ct;
     }
 }
-
-// import java.io.*;
-// import java.util.*;
-
-// public class milk {
-// public static void main(String[] args) throws IOException {
-// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-// PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
-// StringTokenizer st;
-
-// int n = Integer.parseInt(br.readLine());
-// int[] originalA = new int[n];
-// st = new StringTokenizer(br.readLine());
-// for (int i = 0; i < n; i++) {
-// originalA[i] = Integer.parseInt(st.nextToken());
-// }
-// int[] a = originalA.clone();
-// long ans = 0;
-// int q = Integer.parseInt(br.readLine());
-
-// while (q-- > 0) {
-// st = new StringTokenizer(br.readLine());
-// int idx = Integer.parseInt(st.nextToken()) - 1;
-// int j = Integer.parseInt(st.nextToken());
-// a = Arrays.copyOf(originalA, originalA.length);
-// ans = 0;
-// // Replace new value in each query with a[idx].
-// a[idx] = j;
-// Arrays.sort(a);
-// // get the ans
-// for (int k = 0; k < n; k++) {
-// ans += (long) (k + 1) * a[k];
-// }
-// pw.println(ans);
-// }
-// pw.close();
-// }
-// }
