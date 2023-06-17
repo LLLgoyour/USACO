@@ -1,34 +1,37 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int mod;
+    static long mod;
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(in.readLine());
         int n = Integer.parseInt(st.nextToken());
-        mod = Integer.parseInt(st.nextToken());
+        mod = Long.parseLong(st.nextToken());
 
-        int[][] matrix = new int[n][n];
+        long[][] matrix = new long[n][n];
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(in.readLine());
             for (int j = 0; j < n; j++) {
-                matrix[i][j] = Integer.parseInt(st.nextToken()) % mod;
+                matrix[i][j] = Long.parseLong(st.nextToken()) % mod;
             }
         }
 
-        int ans = determinant(matrix, n);
-        if (ans < 0) {
-            ans += mod;
+        long det = determinant(matrix, n);
+        if (det < 0) {
+            det += mod;
         }
 
-        System.out.println(ans);
+        System.out.println(det);
     }
 
     // Function to calculate the determinant of the matrix
-    static int determinant(int[][] matrix, int n) {
-        int det = 1;
+    static long determinant(long[][] matrix, int n) {
+        long det = 1;
+        int sign = 1;
 
         for (int i = 0; i < n; i++) {
             int pivot = -1;
@@ -49,47 +52,47 @@ public class Main {
             // Swapping rows if necessary
             if (pivot != i) {
                 swapRows(matrix, pivot, i);
-                det = (det * modInverse(-1)) % mod;
+                sign *= -1;
             }
 
-            int pivotElement = matrix[i][i];
+            long pivotElement = matrix[i][i];
             det = (det * pivotElement) % mod;
-            int pivotInverse = modInverse(pivotElement);
+            long pivotInverse = modInverse(pivotElement, mod);
 
             // Performing row operations to reduce the matrix to row-echelon form
             for (int j = i + 1; j < n; j++) {
-                int factor = (matrix[j][i] * pivotInverse) % mod;
+                long factor = (matrix[j][i] * pivotInverse) % mod;
 
                 for (int k = i; k < n; k++) {
-                    matrix[j][k] = (matrix[j][k] - factor * matrix[i][k] % mod + mod) % mod;
+                    matrix[j][k] = (matrix[j][k] - (matrix[i][k] * factor) % mod + mod) % mod;
                 }
             }
         }
 
-        return det;
+        return (det * sign + mod) % mod;
     }
 
     // Function to swap two rows of the matrix
-    static void swapRows(int[][] matrix, int row1, int row2) {
-        int[] temp = matrix[row1];
+    static void swapRows(long[][] matrix, int row1, int row2) {
+        long[] temp = matrix[row1];
         matrix[row1] = matrix[row2];
         matrix[row2] = temp;
     }
 
     // Function to calculate the modular inverse of a number
-    static int modInverse(int a) {
-        int b = mod;
-        int x = 0, y = 1;
-        int lastX = 1, lastY = 0;
+    static long modInverse(long a, long mod) {
+        long b = mod;
+        long x = 0, y = 1;
+        long lastX = 1, lastY = 0;
 
         while (b != 0) {
-            int quotient = a / b;
-            int remainder = a % b;
+            long quotient = a / b;
 
+            long temp = a;
             a = b;
-            b = remainder;
+            b = temp % b;
 
-            int temp = x;
+            temp = x;
             x = lastX - quotient * x;
             lastX = temp;
 
@@ -98,12 +101,6 @@ public class Main {
             lastY = temp;
         }
 
-        // Ensuring the modular inverse is positive
-        if (lastX < 0) {
-            lastX += mod;
-        }
-
-        return lastX;
+        return lastX < 0 ? lastX + mod : lastX;
     }
 }
-
