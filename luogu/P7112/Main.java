@@ -26,11 +26,14 @@ public class Main {
         System.out.println(ans);
     }
 
+    // Function to calculate the determinant of the matrix
     static int determinant(int[][] matrix, int n) {
         int det = 1;
 
         for (int i = 0; i < n; i++) {
             int pivot = -1;
+
+            // Finding the pivot element
             for (int j = i; j < n; j++) {
                 if (matrix[j][i] != 0) {
                     pivot = j;
@@ -38,10 +41,12 @@ public class Main {
                 }
             }
 
+            // If pivot is not found, determinant is 0
             if (pivot == -1) {
                 return 0;
             }
 
+            // Swapping rows if necessary
             if (pivot != i) {
                 swapRows(matrix, pivot, i);
                 det = (det * modInverse(-1)) % mod;
@@ -51,6 +56,7 @@ public class Main {
             det = (det * pivotElement) % mod;
             int pivotInverse = modInverse(pivotElement);
 
+            // Performing row operations to reduce the matrix to row-echelon form
             for (int j = i + 1; j < n; j++) {
                 int factor = (matrix[j][i] * pivotInverse) % mod;
 
@@ -63,12 +69,14 @@ public class Main {
         return det;
     }
 
+    // Function to swap two rows of the matrix
     static void swapRows(int[][] matrix, int row1, int row2) {
         int[] temp = matrix[row1];
         matrix[row1] = matrix[row2];
         matrix[row2] = temp;
     }
 
+    // Function to calculate the modular inverse of a number
     static int modInverse(int a) {
         int b = mod;
         int x = 0, y = 1;
@@ -90,6 +98,7 @@ public class Main {
             lastY = temp;
         }
 
+        // Ensuring the modular inverse is positive
         if (lastX < 0) {
             lastX += mod;
         }
