@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Main {
+public class Main { static int mod=1000000007;
     // calculate
     public static double[][] matrixExponentiation(int power) {
         if (power == 1) {
@@ -41,35 +41,15 @@ public class Main {
         return result;
     }
 
-    // print the matrix
-    public static void printMatrix(double[][] matrix) {
-        int n = matrix.length;
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(in.readLine());
         in.close();
-        int f = 0;
-        for (int i = 0; i < n; i++) {
-            int minusone = 1;
-            int minustwo = 1;
-            if (i <= 2) {
-                f = 1;
-                continue;
-            }
-            f = minusone + minustwo;
-            minustwo = minusone;
-            minusone = f;
+        int fib = 0;
+        for (int i = 2; i < n; i++){
+            matrixExponentiation(i);
         }
-        System.out.println(f);
+        System.out.println(fib);
 
     }
 }

@@ -1,14 +1,13 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+i rt java.io.IOException;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(in.readLine());
-        int[] a = new int[n];
-        String[] s = in.readLine().split(" ");
-        for (int i = 0; i < n; i++)
-            a[i] = Integer.parseInt(s[i]);
+import java.io.InputStreamReader;
+
+ava.uil.*;ava.io.*; Min {c voiden = Integer.parseIni
+
+for (int i
+    a[i] = Integer.parseInt(s[i]);
+
         int ans = 0;
         int sum = 0;
         for (int i = 1; i < n; i++) {
