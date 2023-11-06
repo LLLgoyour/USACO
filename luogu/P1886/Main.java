@@ -8,24 +8,27 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         st = new StringTokenizer(br.readLine());
-        Deque<Integer> minMaxDq = new ArrayDeque<>();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++)
+            arr[i] = Integer.parseInt(st.nextToken());
+        br.close();
+        Min(arr, n, k);
+        Max(arr, n, k);
+    }
+
+    public static void Min(int[] arr, int n, int k) {
+        Deque<Integer> minDq = new ArrayDeque<>();
+
+        /*
+         * 从 arr(i_0) 到 arr(i_(n-1)) 的元素入列, 相隔超过 k-1 的队首元素出列, 每个循环中 min(i) 和 max(i)
+         * 为每个循环中对应队列队首元素
+         */
 
         for (int i = 0; i < n; i++) {
-            int[] temp = new int[3];
-            while (i < k) {
-                temp[i] = Integer.parseInt(st.nextToken());
-            }
-            while (i > k - 1) { // assume k = 3 here
-                temp[0] = temp[1];
-                temp[1] = temp[2];
-            }
-            temp[2] = Integer.parseInt(st.nextToken());
-
-            Integer.parseInt(st.nextToken());
-            while (!minDq.isEmpty() && temp <= minDq.getLast()) {
+            while (!minDq.isEmpty() && arr[i] <= minDq.getLast()) {
                 minDq.removeLast();
             }
-            minDq.addLast(temp);
+            minDq.addLast(arr[i]);
 
             if (i - k >= 0 && arr[i - k] == minDq.getFirst()) {
                 minDq.removeFirst();
@@ -35,13 +38,21 @@ public class Main {
                 continue;
             System.out.print(minDq.getFirst() + " ");
         }
-        System.out.println();
+    }
 
+    public static void Max(int[] arr, int n, int k) {
+        Deque<Integer> maxDq = new ArrayDeque<>();
+
+        /*
+         * 从 arr(i_0) 到 arr(i_(n-1)) 的元素入列, 相隔超过 k-1 的队首元素出列, 每个循环中 min(i) 和 max(i)
+         * 为每个循环中对应队列队首元素
+         */
+        System.out.println();
         for (int i = 0; i < n; i++) {
-            while (!maxDq.isEmpty() && temp >= maxDq.getLast()) {
+            while (!maxDq.isEmpty() && arr[i] >= maxDq.getLast()) {
                 maxDq.removeLast();
             }
-            maxDq.addLast(temp);
+            maxDq.addLast(arr[i]);
             if (i - k >= 0 && arr[i - k] == maxDq.getFirst()) {
                 maxDq.removeFirst();
             }
@@ -49,6 +60,5 @@ public class Main {
                 continue;
             System.out.print(maxDq.getFirst() + " ");
         }
-        br.close();
     }
 }
