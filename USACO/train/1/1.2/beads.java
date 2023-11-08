@@ -5,59 +5,60 @@ LANG: JAVA
 TASK: beads
 */
 import java.io.*;
+import java.util.*;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Beads {
+public class beads {
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("beads.in"));
-        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("beads.out")));
+        BufferedReader inputFile = new BufferedReader(new FileReader("beads.in"));
+        PrintWriter output = new PrintWriter(new BufferedWriter(new FileWriter("beads.out")));
 
-        int numBeads = Integer.parseInt(reader.readLine());
+        int numBeads = Integer.parseInt(inputFile.readLine());
         char[] beadsArray = new char[numBeads];
-        int[] streaks = new int[numBeads];
-        String beadsInput = reader.readLine();
+        int[] streaksArray = new int[numBeads];
+        String beadsInput = inputFile.readLine();
 
         for (int i = 0; i < numBeads; i++) {
             beadsArray[i] = beadsInput.charAt(i);
         }
 
         for (int i = 0; i < numBeads; i++) {
-            char bead = beadsArray[i];
-            int index = i;
+            char currentBead = beadsArray[i];
+            int currentIndex = i;
             int counter = 0;
             char acceptedBead = '_';
-            boolean isUndecided = true;
+            boolean undecided = true;
 
-            while ((beadsArray[index] == bead || beadsArray[index] == 'w' || beadsArray[index] == acceptedBead
-                    || isUndecided) && counter < numBeads) {
-                if (beadsArray[index] != 'w') {
-                    acceptedBead = beadsArray[index];
-                    isUndecided = false;
+            while ((beadsArray[currentIndex] == currentBead || beadsArray[currentIndex] == 'w'
+                    || beadsArray[currentIndex] == acceptedBead || undecided) && counter < numBeads) {
+                if (beadsArray[currentIndex] != 'w') {
+                    acceptedBead = beadsArray[currentIndex];
+                    undecided = false;
                 }
-                index += 1;
-                index %= numBeads;
+                currentIndex += 1;
+                currentIndex %= numBeads;
                 counter++;
             }
-            streaks[i] = counter;
+            streaksArray[i] = counter;
         }
 
-        System.out.println(Arrays.toString(streaks));
+        System.out.println(Arrays.toString(streaksArray));
 
         int maxStreak = 0;
-
-        for (int i = 0; i < streaks.length; i++) {
-            int tmp = streaks[i] + streaks[(i + streaks[i]) % numBeads];
-            if (tmp > maxStreak) {
-                maxStreak = tmp;
+        for (int i = 0; i < streaksArray.length; i++) {
+            int currentStreak = streaksArray[i] + streaksArray[(i + streaksArray[i]) % numBeads];
+            if (currentStreak > maxStreak) {
+                maxStreak = currentStreak;
             }
         }
-
         if (maxStreak > numBeads) {
             maxStreak = numBeads;
         }
 
-        writer.println(maxStreak);
-        writer.close();
+        output.println(maxStreak);
+        output.close();
     }
 }
